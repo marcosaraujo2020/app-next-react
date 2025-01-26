@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import { fetchNoticias } from "@/service/noticas";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -35,25 +35,26 @@ export default function IbgePage() {
     alignItems: "center",
   }), []);
 
-  const updateNoticias = async () => {
+
+  const updateNoticias = useCallback(async () => {
     try {
       setLoading(true);
       const newData = await fetchNoticias();
       setData(newData);
-      setError(null);  
+      setError(null);
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Erro ao carregar notícias.");
       setData(null);
     } finally {
       setLoading(false);
-    } 
-  };
+    }
+  }, []);
 
 
   useEffect(() => {
     updateNoticias();
-  }, []);
+  }, [updateNoticias]);
 
 
   return (
