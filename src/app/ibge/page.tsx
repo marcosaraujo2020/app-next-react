@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { fetchNoticias } from "@/service/noticas";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -27,12 +27,20 @@ export default function IbgePage() {
   const [loading, setLoading] = useState(false);  
   const [error, setError] = useState<string | null>(null);
 
+  const boxStyles = useMemo(() => ({
+    my: 4,
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "center",
+    alignItems: "center",
+  }), []);
+
   const updateNoticias = async () => {
     try {
       setLoading(true);
       const newData = await fetchNoticias();
       setData(newData);
-      setError(null);  // Limpa qualquer erro anterior
+      setError(null);  
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     } catch (err) {
       setError("Erro ao carregar notícias.");
@@ -52,15 +60,7 @@ export default function IbgePage() {
     
     <Container maxWidth="lg">
       
-      <Box
-        sx={{
-          my: 4,
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
+      <Box sx={boxStyles}>
         <Link href="/">
           <HomeRoundedIcon color="primary" fontSize="large"></HomeRoundedIcon>
         </Link>
