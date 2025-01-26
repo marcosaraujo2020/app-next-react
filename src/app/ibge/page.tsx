@@ -11,6 +11,8 @@ import Link from '@mui/material/Link';
 import Container from '@mui/material/Container';
 import Box from "@mui/material/Box";
 import AtualizarNoticiasButton from "@/components/atualizar.noticias.btn";
+import HomeRoundedIcon from '@mui/icons-material/HomeRounded';
+
 
 interface Noticia {
   titulo: string;
@@ -29,7 +31,10 @@ export default function IbgePage() {
   };
 
   return (
+    
+    
     <Container maxWidth="lg">
+      
       <Box
         sx={{
           my: 4,
@@ -39,6 +44,10 @@ export default function IbgePage() {
           alignItems: 'center',
         }}
       >
+        <Link href="/">
+          <HomeRoundedIcon color="primary" fontSize="large"></HomeRoundedIcon>
+        </Link>
+        
 
         {data ? (
         <Card sx={{ maxWidth: 600, mt: 4, mb: 2}}>

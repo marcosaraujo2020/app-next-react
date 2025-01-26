@@ -1,3 +1,4 @@
+import { Link } from "@mui/material";
 import Image from "next/image";
 
 export default function Home() {
@@ -17,18 +18,18 @@ export default function Home() {
             Get started by editing{" "}
             <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
               src/app/page.tsx
-            </code>
-            .
+            </code>.
           </li>
           <li>Save and see your changes instantly.</li>
+          <li><Link href="/ibge">Acesse as notícias do IBGE</Link></li>
         </ol>
 
         <div className="flex gap-4 items-center flex-col sm:flex-row">
           
           <h1>Hello world!!</h1>
-          
-
+        
         </div>
+
       </main>
       <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
         <p>&copy; Todos os direitos reservados.</p>
