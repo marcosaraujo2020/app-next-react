@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { fetchNoticias } from "@/service/noticas";
 import Card from '@mui/material/Card';
 import CardActions from '@mui/material/CardActions';
@@ -24,14 +24,31 @@ interface Noticia {
 
 export default function IbgePage() {
   const [data, setData] = useState<Noticia | null>(null);
+  const [loading, setLoading] = useState(false);  
+  const [error, setError] = useState<string | null>(null);
 
   const updateNoticias = async () => {
-    const newData = await fetchNoticias();
-    setData(newData); 
+    try {
+      setLoading(true);
+      const newData = await fetchNoticias();
+      setData(newData);
+      setError(null);  // Limpa qualquer erro anterior
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    } catch (err) {
+      setError("Erro ao carregar notícias.");
+      setData(null);
+    } finally {
+      setLoading(false);
+    } 
   };
 
+
+  useEffect(() => {
+    updateNoticias();
+  }, []);
+
+
   return (
-    
     
     <Container maxWidth="lg">
       
@@ -48,40 +65,43 @@ export default function IbgePage() {
           <HomeRoundedIcon color="primary" fontSize="large"></HomeRoundedIcon>
         </Link>
         
-
-        {data ? (
-        <Card sx={{ maxWidth: 600, mt: 4, mb: 2}}>
-          
-          <CardMedia component="img" alt="logo ibge" image="/ibge-logo.png" />
-
-          <CardContent>
-            <Typography gutterBottom variant="h6" component="div">
-              {data.titulo}
-            </Typography>
-            <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-              {data.descricao}
-            </Typography>
-            <Typography variant="overline" sx={{ color: 'text.primary' }}>
-              {data.publicacao}
-            </Typography>
-          </CardContent>
-          
-          <CardActions>
-            <Link href={data.fonte} target="_blank" variant="overline" >
-              Fonte da notícia 
-            </Link>
-          </CardActions>
-        </Card>
-        ): (
+        {loading ? (
+          <Typography variant="body1">Carregando notícias...</Typography>
+        ) : error ? (
           <Typography variant="h6" color="error">
-            Não foi possível carregar as notícias. Tente novamente mais tarde.
+            {error}
           </Typography>
-        )}
-  
+        ) : data ? (
+          <Card sx={{ maxWidth: 600, mt: 4, mb: 2}}>
+            
+            <CardMedia component="img" alt="logo ibge" image="/ibge-logo.png" />
+
+            <CardContent>
+              <Typography gutterBottom variant="h6" component="div">
+                {data.titulo}
+              </Typography>
+              <Typography variant="body2" sx={{ color: 'text.secondary' }}>
+                {data.descricao}
+              </Typography>
+              <Typography variant="overline" sx={{ color: 'text.primary' }}>
+                {data.publicacao}
+              </Typography>
+            </CardContent>
+            
+            <CardActions>
+              <Link href={data.fonte} target="_blank" variant="overline" >
+                Fonte da notícia 
+              </Link>
+            </CardActions>
+          </Card>
+          ): (
+            <Typography variant="h6" color="error">
+              Não foi possível carregar as notícias. Tente novamente mais tarde.
+            </Typography>
+          )}
+         
         <AtualizarNoticiasButton onUpdate={updateNoticias} />
-        
       </Box>
-     
     </Container>
   );
 }
